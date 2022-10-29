@@ -5,7 +5,7 @@ Customized for high performance stability with low latency. offering stability, 
 
 ## Fetching Linux kernel source
 
-Fetching [linux-6.0.5](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?h=v6.0.5) source code.
+Fetching [linux-6.0.5](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.0.5) source code.
  
 ```bash
 # Using Git
