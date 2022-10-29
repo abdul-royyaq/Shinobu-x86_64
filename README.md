@@ -5,19 +5,23 @@ Customized for high performance stability with low latency. offering stability, 
 
 ## Fetching Linux kernel source
 
-Fetching [linux-6.0](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?h=v6.0) source code.
+Fetching [linux-6.0.5](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?h=v6.0.5) source code.
  
 ```bash
 # Using Git
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.0 linux-6.0
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.0.5 linux-6.0.5
 
 # Using Wget
-wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.0.tar.xz && tar -xf linux-6.0.tar.xz
+wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.0.5.tar.xz && tar -xf linux-6.0.5.tar.xz
 ```
 Fetching patch and applying.
 
 ```bash
-wget https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.0.xz && xz -d patch-6.0.xz && patch -d linux-6.0 -p1 < patch-6.0
+# Apply each patch manually
+wget https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.0.5.xz && xz -d patch-6.0.5.xz && patch -d linux-6.0.5 -p1 < patch-6.0.5
+
+# Apply all patches automatically (not recommended if source code from git)
+wget https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.0.5.xz && xz -d patch-6.0.5.xz && patch -fd linux-6.0.5 -p1 < patch-6.0.5
 ```
 
 ## Kernel Compilation
@@ -30,6 +34,9 @@ make menuconfig
 
 # Kernel compilation (with all cpu cores)
 make -j$(nproc)
+
+# To avoid the `+` sign being added automatically to version names of modified git release sources, add the `LOCALVERSION=` flag at compile time
+make LOCALVERSION= -j$(nproc)
 ```
 
 ## Kernel Installation
@@ -53,10 +60,10 @@ make -j$(nproc) install
 make -j$(nproc) modules_install
 
 # Install kernel
-cp -iv arch/x86/boot/bzImage /boot/vmlinuz-6.0.0-shinobu-x86_64
+cp -iv arch/x86/boot/bzImage /boot/vmlinuz-6.0.5-shinobu-x86_64
 
 # Install System.map
-cp -iv System.map /boot/System.map-6.0.0-shinobu-x86_64
+cp -iv System.map /boot/System.map-6.0.5-shinobu-x86_64
 ```
 ## Install Kernel Documentation (Optional)
 
@@ -64,8 +71,8 @@ If you want documentation for the linux kernel.
 
 ```bash
 # Install kernel documentation (optional)
-install -d /usr/share/doc/linux-6.0.0-shinobu-x86_64
-cp -r Documentation/* /usr/share/doc/linux-6.0.0-shinobu-x86_64
+install -d /usr/share/doc/linux-6.0.5-shinobu-x86_64
+cp -r Documentation/* /usr/share/doc/linux-6.0.5-shinobu-x86_64
 ```
 
 ## Generate Initramfs (Optional)
@@ -74,7 +81,7 @@ To generate a minimal initramfs, you can use [mkinitcpio](https://wiki.archlinux
 
 ```bash
 # Generate initramfs (optional)
-dracut --kver 6.0.0-shinobu-x86_64 /boot/initramfs-6.0.0-shinobu-x86_64.img --force
+dracut --kver 6.0.5-shinobu-x86_64 /boot/initramfs-6.0.5-shinobu-x86_64.img --force
 ```
 
 ## Updating Grub2 Bootloader
