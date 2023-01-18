@@ -15,23 +15,23 @@ Customized for high performance stability with low latency. offering stability, 
 
 ## Fetching Linux kernel source
 
-Fetching [linux-6.1.0](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.1) source code.
+Fetching [linux-6.1.6](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.1.6) source code.
  
 ```bash
 # Using Git
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.1 linux-6.1
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.1.6 linux-6.1.6
 
 # Using Wget
-wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.1.tar.xz && tar -xf linux-6.1.tar.xz
+wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.1.6.tar.xz && tar -xf linux-6.1.6.tar.xz
 ```
 Fetching patch and applying.
 
 ```bash
 # Apply each patch manually
-wget https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.1.xz && xz -d patch-6.1.xz && patch -d linux-6.1 -p1 < patch-6.1
+wget https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.1.6.xz && xz -d patch-6.1.6.xz && patch -d linux-6.1.6 -p1 < patch-6.1.6
 
 # Apply all patches automatically (not recommended if source code from git)
-wget https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.1.xz && xz -d patch-6.1.xz && patch -fd linux-6.1 -p1 < patch-6.1
+wget https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.1.6.xz && xz -d patch-6.1.6.xz && patch -fd linux-6.1.6 -p1 < patch-6.1.6
 ```
 
 ## Kernel Compilation
@@ -70,10 +70,10 @@ make -j$(nproc) install
 make -j$(nproc) modules_install
 
 # Install kernel
-cp -iv arch/x86/boot/bzImage /boot/vmlinuz-6.1.0-shinobu-x86_64
+cp arch/x86/boot/bzImage /boot/vmlinuz-6.1.0-shinobu-x86_64
 
 # Install System.map
-cp -iv System.map /boot/System.map-6.1.0-shinobu-x86_64
+cp System.map /boot/System.map-6.1.0-shinobu-x86_64
 ```
 ## Install Kernel Documentation (Optional)
 
@@ -81,8 +81,8 @@ If you want documentation for the linux kernel.
 
 ```bash
 # Install kernel documentation (optional)
-install -d /usr/share/doc/linux-6.1.0-shinobu-x86_64
-cp -r Documentation/* /usr/share/doc/linux-6.1.0-shinobu-x86_64
+install -d /usr/share/doc/linux-6.1.6-shinobu-x86_64
+cp -r Documentation/* /usr/share/doc/linux-6.1.6-shinobu-x86_64
 ```
 
 ## Generate Initramfs (Optional)
@@ -91,7 +91,7 @@ To generate a minimal initramfs, you can use [mkinitcpio](https://wiki.archlinux
 
 ```bash
 # Generate initramfs (optional)
-dracut --kver 6.1.0-shinobu-x86_64 /boot/initramfs-6.1.0-shinobu-x86_64.img --force
+dracut --kver 6.1.6-shinobu-x86_64 /boot/initramfs-6.1.6-shinobu-x86_64.img --force
 ```
 
 ## Updating Grub2 Bootloader
@@ -104,4 +104,6 @@ update-grub
 
 # Incase update-grub command not available
 grub-mkconfig -o /boot/grub/grub.cfg
+# or
+grub2-mkconfig -o /boot/grub/grub.cfg
 ```
