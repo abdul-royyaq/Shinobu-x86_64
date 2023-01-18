@@ -70,10 +70,10 @@ make -j$(nproc) install
 make -j$(nproc) modules_install
 
 # Install kernel
-cp arch/x86/boot/bzImage /boot/vmlinuz-6.1.0-shinobu-x86_64
+cp arch/x86/boot/bzImage /boot/vmlinuz-6.1.6-shinobu-x86_64
 
 # Install System.map
-cp System.map /boot/System.map-6.1.0-shinobu-x86_64
+cp System.map /boot/System.map-6.1.6-shinobu-x86_64
 ```
 ## Install Kernel Documentation (Optional)
 
