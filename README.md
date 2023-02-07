@@ -13,35 +13,63 @@ Customized for high performance stability with low latency. offering stability, 
 
 ---
 
-## Fetching Linux kernel source
+## Fetching Linux Kernel Source
 
-Fetching [linux-6.1.6](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.1.6) source code.
+Fetching [linux-6.1.10](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.1.10) source code.
  
 ```bash
-# Using Git
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.1.6 linux-6.1.6
+# Fetching kernel source using git and place in /usr/src directory
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.1.10 /usr/src/linux-6.1.10-shinobu
 
-# Using Wget
-wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.1.6.tar.xz && tar -xf linux-6.1.6.tar.xz
+# Fetching kernel source using wget and place in /usr/src directory
+wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.1.10.tar.xz && tar -xf linux-6.1.10.tar.xz -C /usr/src/linux-6.1.10-shinobu
 ```
-Fetching patch and applying.
+
+Fetching [patch](https://lore.kernel.org/all/20230203101009.946745030@linuxfoundation.org) and applying.
 
 ```bash
 # Apply each patch manually
-wget https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.1.6.xz && xz -d patch-6.1.6.xz && patch -d linux-6.1.6 -p1 < patch-6.1.6
+wget https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.1.10.xz && tar -xf patch-6.1.10.xz && patch -d /usr/src/linux-6.1.10-shinobu -p1 < patch-6.1.10
 
 # Apply all patches automatically (not recommended if source code from git)
-wget https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.1.6.xz && xz -d patch-6.1.6.xz && patch -fd linux-6.1.6 -p1 < patch-6.1.6
+wget https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.1.10.xz && tar -xf patch-6.1.10.xz && patch -fd /usr/src/linux-6.1.10-shinobu -p1 < patch-6.1.10
 ```
 
-## Kernel Compilation
+## Preparation Before Compilation
+
+Fetching this kernel configuration
+
+```bash
+Fetching thies kernel configuration using git
+git clone https://github.com/abdul-royyaq/shinobu-x86_64.git /usr/src/shinobu-x86_64
+```
 
 Copy the kernel configuration first before starting compilation.
 
 ```bash
+# Backup original logo_linux_clut224.ppm and copy kernel configuration
+mv /usr/src/linux-6.1.10-shinobu/drivers/video/logo/logo_linux_clut224.ppm /usr/src/linux-6.1.10-shinobu/drivers/video/logo/logo_linux_clut224.backup.ppm && cp -r /usr/src/shinobu-x86_64/{.config,drivers,localversion} /usr/src/linux-6.1.10-shinobu
+```
+
+Entering kernel source directory.
+
+```bash
+# Moving to kernel source directory 
+cd /usr/src/linux-6.1.10-shinobu
+```
+
+If need adjust the configuration (optional).
+
+```bash
 # If you need to configure
 make menuconfig 
+```
 
+## Kernel Compilation
+
+Start Compilation
+
+```bash
 # Kernel compilation (with all cpu cores)
 make -j$(nproc)
 
@@ -51,9 +79,7 @@ make LOCALVERSION= -j$(nproc)
 
 ## Kernel Installation
 
-There are two methods to install the kernel.
-
-* Method 1
+* Kernel installation
 
 ```bash
 # Install kernel modules
@@ -63,40 +89,48 @@ make -j$(nproc) modules_install
 make -j$(nproc) install
 ```
 
-* Method 2 Manually (if Grub2 bootloader not detect new installed kernel)
+* Kernel installation if using grub2 bootloader
 
 ```bash
 # Install kernel modules
 make -j$(nproc) modules_install
 
 # Install kernel
-cp arch/x86/boot/bzImage /boot/vmlinuz-6.1.6-shinobu-x86_64
+cp arch/x86/boot/bzImage /boot/vmlinuz-6.1.10-shinobu-x86_64
 
 # Install System.map
-cp System.map /boot/System.map-6.1.6-shinobu-x86_64
+cp System.map /boot/System.map-6.1.10-shinobu-x86_64
 ```
+
 ## Install Kernel Documentation (Optional)
 
 If you want documentation for the linux kernel.
 
 ```bash
 # Install kernel documentation (optional)
-install -d /usr/share/doc/linux-6.1.6-shinobu-x86_64
-cp -r Documentation/* /usr/share/doc/linux-6.1.6-shinobu-x86_64
+install -d /usr/share/doc/linux-6.1.10-shinobu-x86_64
+cp -r Documentation/* /usr/share/doc/linux-6.1.10-shinobu-x86_64
 ```
 
 ## Generate Initramfs (Optional)
 
-To generate a minimal initramfs, you can use [mkinitcpio](https://wiki.archlinux.org/title/Mkinitcpio/Minimal_initramfs) instead.
+* Generate full initramfs image using dracut.
 
 ```bash
-# Generate initramfs (optional)
-dracut --kver 6.1.6-shinobu-x86_64 /boot/initramfs-6.1.6-shinobu-x86_64.img --force
+# Generate full initramfs image using dracut
+dracut --kver 6.1.10-shinobu-x86_64 /boot/initramfs-6.1.10-shinobu-x86_64.img
+```
+
+* Generate minimal initramfs using mkinitcpio.
+
+```bash
+# Generate minimal initramfs using mkinitcpio
+mkinitcpio -k 6.1.10-shinobu-x86_64 -g /boot/initramfs-6.1.10-shinobu-x86_64.img
 ```
 
 ## Updating Grub2 Bootloader
 
-Grub2 bootloader is used in almost every modern linux distro, you don't need to if you're using LiLo, if you are use [other bootloaders](https://wiki.archlinux.org/title/Category:Boot_loaders).
+Grub2 bootloader is used in almost every modern linux distro's, you don't need it if you're using LiLo, or read here if you are using [other bootloaders](https://wiki.archlinux.org/title/Category:Boot_loaders).
 
 ```bash
 # Update Grub2
