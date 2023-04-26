@@ -15,11 +15,11 @@ Customized for high performance stability with low latency. offers stability, hi
 
 ## Fetching Linux Kernel Source
 
-Fetching [linux-6.2.10](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.2.10) source code.
+Fetching [linux-6.3.0](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.3) source code.
  
 ```bash
 # Fetching kernel source and place in /usr/src directory
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.2.10 /usr/src/linux-6.2.10-shinobu
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.3 /usr/src/linux-6.3.0-shinobu
 ```
 
 ## Preparation Before Compilation
@@ -35,14 +35,14 @@ Copy the kernel configuration first before starting compilation.
 
 ```bash
 # Backup original logo_linux_clut224.ppm and copy kernel configuration
-mv /usr/src/linux-6.2.10-shinobu/drivers/video/logo/logo_linux_clut224.ppm /usr/src/linux-6.2.10-shinobu/drivers/video/logo/logo_linux_clut224.backup.ppm && cp -r /usr/src/Shinobu-x86_64/{.config,drivers,localversion} /usr/src/linux-6.2.10-shinobu
+mv /usr/src/linux-6.3.0-shinobu/drivers/video/logo/logo_linux_clut224.ppm /usr/src/linux-6.3.0-shinobu/drivers/video/logo/logo_linux_clut224.backup.ppm && cp -r /usr/src/Shinobu-x86_64/{.config,drivers,localversion} /usr/src/linux-6.3.0-shinobu
 ```
 
 Entering kernel source directory.
 
 ```bash
 # Moving to kernel source directory 
-cd /usr/src/linux-6.2.10-shinobu
+cd /usr/src/linux-6.3.0-shinobu
 ```
 
 If need adjust the configuration (optional).
@@ -80,10 +80,10 @@ make -j$(nproc) install
 make -j$(nproc) modules_install
 
 # Install kernel
-cp arch/x86/boot/bzImage /boot/vmlinuz-6.2.10-shinobu-x86_64
+cp arch/x86/boot/bzImage /boot/vmlinuz-6.3.0-shinobu-x86_64
 
 # Install System.map
-cp System.map /boot/System.map-6.2.10-shinobu-x86_64
+cp System.map /boot/System.map-6.3.0-shinobu-x86_64
 ```
 
 ## Install Kernel Documentation (Optional)
@@ -92,8 +92,8 @@ If you want documentation for the Linux kernel.
 
 ```bash
 # Install kernel documentation (optional)
-install -d /usr/share/doc/linux-6.2.10-shinobu-x86_64
-cp -r Documentation/* /usr/share/doc/linux-6.2.10-shinobu-x86_64
+install -d /usr/share/doc/linux-6.3.0-shinobu-x86_64
+cp -r Documentation/* /usr/share/doc/linux-6.3.0-shinobu-x86_64
 ```
 
 ## Generate Initramfs (Optional)
@@ -102,14 +102,14 @@ cp -r Documentation/* /usr/share/doc/linux-6.2.10-shinobu-x86_64
 
 ```bash
 # Generate full initramfs image using dracut
-dracut --kver 6.2.10-shinobu-x86_64 /boot/initramfs-6.2.10-shinobu-x86_64.img
+dracut --kver 6.3.0-shinobu-x86_64 /boot/initramfs-6.3.0-shinobu-x86_64.img
 ```
 
 * Generate minimal initramfs using mkinitcpio.
 
 ```bash
 # Generate minimal initramfs using mkinitcpio
-mkinitcpio -k 6.2.10-shinobu-x86_64 -g /boot/initramfs-6.2.10-shinobu-x86_64.img
+mkinitcpio -k 6.3.0-shinobu-x86_64 -g /boot/initramfs-6.3.0-shinobu-x86_64.img
 ```
 
 ## Updating Grub2 Bootloader
