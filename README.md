@@ -6,7 +6,8 @@ Customized for high performance stability and security with low latency. Offers 
 ### Features Offered
 
 * Performance as default cpufreq governor.
-* Securtiy kernel hardening.
+* Performance as default PCIe ASPM policy.
+* Security kernel hardening.
 * Low latency desktop preemption.
 * 1000hz fast timer frequency.
 * Use fastest LZ4 compression.
@@ -17,11 +18,11 @@ Customized for high performance stability and security with low latency. Offers 
 
 ## Fetching Linux Kernel Source
 
-Fetching [Linux 6.4](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.4) source code.
+Fetching [Linux 6.4.6](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.4.6) source code.
  
 ```bash
 # Fetching kernel source and place in /usr/src directory
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.4 /usr/src/linux-6.4.0-shinobu
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.4.6 /usr/src/linux-6.4.6-shinobu
 ```
 
 ## Preparation Before Compilation
@@ -37,14 +38,14 @@ Copy kernel configuration and placing kernel configuration.
 
 ```bash
 # Backup original logo_linux_clut224.ppm and copy kernel configuration
-mv /usr/src/linux-6.4.0-shinobu/drivers/video/logo/logo_linux_clut224.ppm /usr/src/linux-6.4.0-shinobu/drivers/video/logo/logo_linux_clut224.backup.ppm && cp -r /usr/src/Shinobu-x86_64/{.config,drivers,localversion} /usr/src/linux-6.4.0-shinobu
+mv /usr/src/linux-6.4.6-shinobu/drivers/video/logo/logo_linux_clut224.ppm /usr/src/linux-6.4.6-shinobu/drivers/video/logo/logo_linux_clut224.backup.ppm && cp -r /usr/src/Shinobu-x86_64/{.config,drivers,localversion} /usr/src/linux-6.4.6-shinobu
 ```
 
 Entering kernel source directory.
 
 ```bash
 # Moving to kernel source directory 
-cd /usr/src/linux-6.4.0-shinobu
+cd /usr/src/linux-6.4.6-shinobu
 ```
 
 Modify kernel configuration if you wish (optional).
@@ -82,10 +83,10 @@ make -j$(nproc) install
 make -j$(nproc) modules_install
 
 # Manually install kernel
-cp arch/x86/boot/bzImage /boot/vmlinuz-6.4.0-shinobu-x86_64
+cp arch/x86/boot/bzImage /boot/vmlinuz-6.4.6-shinobu-x86_64
 
 # Manually install System.map
-cp System.map /boot/System.map-6.4.0-shinobu-x86_64
+cp System.map /boot/System.map-6.4.6-shinobu-x86_64
 ```
 
 ## Install Kernel Documentation (Optional)
@@ -94,8 +95,8 @@ If you want documentation for the Linux kernel.
 
 ```bash
 # Install kernel documentation
-install -d /usr/share/doc/linux-6.4.0-shinobu-x86_64
-cp -r Documentation/* /usr/share/doc/linux-6.4.0-shinobu-x86_64
+install -d /usr/share/doc/linux-6.4.6-shinobu-x86_64
+cp -r Documentation/* /usr/share/doc/linux-6.4.6-shinobu-x86_64
 ```
 
 ## Generate Initramfs (Optional)
@@ -104,19 +105,19 @@ cp -r Documentation/* /usr/share/doc/linux-6.4.0-shinobu-x86_64
 
 ```bash
 # Generate a full initramfs
-dracut --kver 6.4.0-shinobu-x86_64 /boot/initramfs-6.4.0-shinobu-x86_64.img
+dracut --lz4 --kver 6.4.6-shinobu-x86_64 /boot/initramfs-6.4.6-shinobu-x86_64.img
 ```
 
 * Generate minimal initramfs image using mkinitcpio.
 
 ```bash
 # Generate a minimal initramfs
-mkinitcpio -k 6.4.0-shinobu-x86_64 -g /boot/initramfs-6.4.0-shinobu-x86_64.img
+mkinitcpio -z lz4 -k 6.4.6-shinobu-x86_64 -g /boot/initramfs-6.4.6-shinobu-x86_64.img
 ```
 
 ## Updating Grub2 Bootloader
 
-Grub2 bootloader is used in almost every modern Linux Distro's, don't need it if you're using LiLo, follow this gude if you are using [other bootloaders](https://wiki.archlinux.org/title/Category:Boot_loaders).
+Grub2 bootloader is used in almost every modern Linux Distro's, don't need it if you're using LiLo, follow this guide if you are using [other bootloaders](https://wiki.archlinux.org/title/Category:Boot_loaders).
 
 ```bash
 # Generate Grub2 configuration
