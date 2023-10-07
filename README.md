@@ -1,131 +1,141 @@
 # Shinobu-x86_64
 
 Shinobu-x86_64 is a personal Linux kernel configuration based on the latest stable [Linux kernel](https://kernel.org) release.
-Customized for high performance stability and security with low latency. Offers stability, high performance, security, and responsiveness for desktop and gaming experiences.
+Customized for high performance stability and security with low latency. Offers high performance, stability, security, and responsiveness for desktop and gaming experiences.
 
 ### Features Offered
 
-* Performance as default cpufreq governor.
-* Performance as default PCIe ASPM policy.
+* Performance cpufreq governor.
+* Performance PCIe ASPM policy.
 * Security kernel hardening.
+* SELinux & Apparmor isolation support.
 * Low latency desktop preemption.
-* 1000hz fast timer frequency.
-* Use fastest LZ4 compression.
+* Fast 1000hz timer frequency.
+* Fastest LZ4 compression.
 * Device driver as kernel module.
-* Use -O2 level compiler optimization.
+* -O2 level for compiler optimization.
 
 ---
 
-## Fetching Linux Kernel Source
+## Fetch Linux Kernel Source
 
-Fetching [Linux 6.5](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.5) source code.
+* Fetch [Linux 6.5.6](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.5.6) source code.
  
 ```bash
-# Fetching kernel source and place in /usr/src directory
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.5 /usr/src/linux-6.5.0-shinobu
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.5.6 &&
+sudo mv linux /usr/src/linux-6.5.6-shinobu
 ```
 
 ## Preparation Before Compilation
 
-Before starting please read [Minimal requirements to compile the Kernel](https://www.kernel.org/doc/html/latest/process/changes.html)
+* Before starting please read [Minimal requirements to compile the Kernel](https://www.kernel.org/doc/html/latest/process/changes.html)
 
-Fetching kernel configuration.
+* Fetch kernel configuration.
 
 ```bash
-#Fetching this kernel configuration and place in /usr/src directory
-git clone https://github.com/abdul-royyaq/shinobu-x86_64.git --depth 1 /usr/src/Shinobu-x86_64
+git clone https://github.com/abdul-royyaq/shinobu-x86_64.git --depth 1 &&
+sudo mv shinobu-x86_64 /usr/src/shinobu-x86_64
 ```
 
-Copy kernel configuration and placing kernel configuration.
+* Backup original linux logo & apply kernel configuration.
 
 ```bash
-# Backup original logo_linux_clut224.ppm and copy kernel configuration
-mv /usr/src/linux-6.5.0-shinobu/drivers/video/logo/logo_linux_clut224.ppm /usr/src/linux-6.5.0-shinobu/drivers/video/logo/logo_linux_clut224.backup.ppm && cp -r /usr/src/Shinobu-x86_64/{.config,drivers,localversion} /usr/src/linux-6.5.0-shinobu
+mv /usr/src/linux-6.5.6-shinobu/drivers/video/logo/logo_linux_clut224.ppm /usr/src/linux-6.5.6-shinobu/drivers/video/logo/logo_linux_clut224.backup.ppm &&
+cp /usr/src/shinobu-x86_64/.config /usr/src/linux-6.5.6-shinobu/ &&
+cp /usr/src/shinobu-x86_64/logo/logo_linux_clut224-1920x1080.ppm /usr/src/linux-6.5.6-shinobu/drivers/video/logo/logo_linux_clut224.ppm
 ```
 
-Entering kernel source directory.
+`*For 1366x768p resolution can use logo_linux_clut224-1366x768.ppm`
 
 ```bash
-# Moving to kernel source directory 
-cd /usr/src/linux-6.5.0-shinobu
+cp /usr/src/shinobu-x86_64/logo/logo_linux_clut224-1366x768.ppm /usr/src/linux-6.5.6-shinobu/drivers/video/logo/logo_linux_clut224.ppm
 ```
 
-Modify kernel configuration if you wish (optional).
+* Entering kernel source directory.
 
 ```bash
-# If you need to configure
+cd /usr/src/linux-6.5.6-shinobu
+```
+
+* Modify kernel configuration (optional).
+
+Modify kernel configuration if you wish.
+
+```bash
 make menuconfig 
 ```
 
 ## Kernel Compilation
 
-Start Compilation
+* Start Compilation.
+
+Kernel compilation with all cpu cores.
 
 ```bash
-# Kernel compilation (with all cpu cores), adding `LOCALVERSION=` flag at compile time to avoid `+` sign that added to the name automatically due to semantic versioning
 make LOCALVERSION= -j$(nproc)
 ```
 
+`*Added 'LOCALVERSION=' flag at compile time to avoid weird names added due to updates after commit tag`
+
 ## Kernel Installation
 
-* Kernel installation
+* Kernel installation.
+
+Kernel installation.
 
 ```bash
-# Install kernel modules
-make -j$(nproc) modules_install
-
-# Install kernel
-make -j$(nproc) install
+sudo make -j$(nproc) modules_install &&
+sudo make -j$(nproc) install
 ```
 
-* Manual kernel installation (if using Grub2 bootloader)
+`*Kernel installation if using GRUB2.`
 
 ```bash
-# Install kernel modules
-make -j$(nproc) modules_install
-
-# Manually install kernel
-cp arch/x86/boot/bzImage /boot/vmlinuz-6.5.0-shinobu-x86_64
-
-# Manually install System.map
-cp System.map /boot/System.map-6.5.0-shinobu-x86_64
+sudo make -j$(nproc) modules_install &&
+sudo cp arch/x86/boot/bzImage /boot/vmlinuz-6.5.6-shinobu-x86_64 &&
+sudo cp System.map /boot/System.map-6.5.6-shinobu-x86_64
 ```
 
-## Install Kernel Documentation (Optional)
+## Kernel Documentation
 
-If you want documentation for the Linux kernel.
+* Install kernel documentation (optional).
 
 ```bash
-# Install kernel documentation
-install -d /usr/share/doc/linux-6.5.0-shinobu-x86_64
-cp -r Documentation/* /usr/share/doc/linux-6.5.0-shinobu-x86_64
+sudo install -d /usr/share/doc/linux-6.5.6-shinobu-x86_64 &&
+sudo cp -r Documentation/* /usr/share/doc/linux-6.5.6-shinobu-x86_64
 ```
 
-## Generate Initramfs (Optional)
+## Generate Initramfs
 
-* Generate full initramfs image using dracut.
+* Generate initramfs image.
+
+Ways to generate initramfs image.
+
+`- Minimal using mkinitcpio.`
 
 ```bash
-# Generate a full initramfs
-dracut --lz4 --kver 6.5.0-shinobu-x86_64 /boot/initramfs-6.5.0-shinobu-x86_64.img
+sudo mkinitcpio -z lz4 -k 6.5.6-shinobu-x86_64 -g /boot/initramfs-6.5.6-shinobu-x86_64.img
 ```
 
-* Generate minimal initramfs image using mkinitcpio.
+`- Full using dracut.`
 
 ```bash
-# Generate a minimal initramfs
-mkinitcpio -z lz4 -k 6.5.0-shinobu-x86_64 -g /boot/initramfs-6.5.0-shinobu-x86_64.img
+sudo dracut --lz4 --kver 6.5.6-shinobu-x86_64 /boot/initramfs-6.5.6-shinobu-x86_64.img
 ```
 
-## Updating Grub2 Bootloader
+## Updating GRUB2 Bootloader
 
-Grub2 bootloader is used in almost every modern Linux Distro's, don't need it if you're using LiLo, follow this guide if you are using [other bootloaders](https://wiki.archlinux.org/title/Category:Boot_loaders).
+GRUB2 bootloader is used in almost every modern Linux Distro's.
+
+* Generate GRUB2 configuration.
 
 ```bash
-# Generate Grub2 configuration
 grub-mkconfig -o /boot/grub/grub.cfg
+```
 
-# In case update-grub command not available
+`*In some distro's.`
+
+``` 
 grub2-mkconfig -o /boot/grub/grub.cfg
 ```
 
