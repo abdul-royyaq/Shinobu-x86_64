@@ -22,7 +22,7 @@ Customized for high performance stability and security with low latency. Offers 
 * Fetch [Linux 6.6.5](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.6.5) source code.
  
 ```bash
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.6 &&
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.6.5 &&
 sudo mv linux /usr/src/linux-6.6.5-shinobu
 ```
 
