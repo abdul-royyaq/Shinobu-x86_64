@@ -19,11 +19,11 @@ Customized for high performance stability and security with low latency. Offers 
 
 ## Fetch Linux Kernel Source
 
-* Fetch [Linux 6.6.5](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.6.5) source code.
+* Fetch [Linux 6.6.6](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.6.6) source code.
  
 ```bash
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.6.5 &&
-sudo mv linux /usr/src/linux-6.6.5-shinobu
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.6.6 &&
+sudo mv linux /usr/src/linux-6.6.6-shinobu
 ```
 
 ## Preparation Before Compilation
@@ -40,27 +40,27 @@ sudo mv Shinobu-x86_64 /usr/src/Shinobu-x86_64
 * Backup original linux logo & apply kernel configuration.
 
 ```bash
-mv /usr/src/linux-6.6.5-shinobu/drivers/video/logo/logo_linux_clut224.ppm /usr/src/linux-6.6.5-shinobu/drivers/video/logo/logo_linux_clut224.backup.ppm &&
-cp /usr/src/Shinobu-x86_64/.config /usr/src/linux-6.6.5-shinobu/ &&
-cp /usr/src/Shinobu-x86_64/logo/logo_linux_clut224-1920x1080.ppm /usr/src/linux-6.6.5-shinobu/drivers/video/logo/logo_linux_clut224.ppm
+mv /usr/src/linux-6.6.6-shinobu/drivers/video/logo/logo_linux_clut224.ppm /usr/src/linux-6.6.6-shinobu/drivers/video/logo/logo_linux_clut224.backup.ppm &&
+cp /usr/src/Shinobu-x86_64/.config /usr/src/linux-6.6.6-shinobu/ &&
+cp /usr/src/Shinobu-x86_64/logo/logo_linux_clut224-1920x1080.ppm /usr/src/linux-6.6.6-shinobu/drivers/video/logo/logo_linux_clut224.ppm
 ```
 
 `*For 1366x768p resolution can use logo_linux_clut224-1366x768.ppm`
 
 ```bash
-cp /usr/src/Shinobu-x86_64/logo/logo_linux_clut224-1366x768.ppm /usr/src/linux-6.6.5-shinobu/drivers/video/logo/logo_linux_clut224.ppm
+cp /usr/src/Shinobu-x86_64/logo/logo_linux_clut224-1366x768.ppm /usr/src/linux-6.6.6-shinobu/drivers/video/logo/logo_linux_clut224.ppm
 ```
 
 * Entering kernel source directory.
 
 ```bash
-cd /usr/src/linux-6.6.5-shinobu
+cd /usr/src/linux-6.6.6-shinobu
 ```
 
 * Modify kernel configuration if you wish (optional).
 
 ```bash
-make menuconfig 
+make menuconfig
 ```
 
 ## Kernel Compilation
@@ -81,8 +81,8 @@ make LOCALVERSION= -j$(nproc)
 
 ```bash
 sudo make -j$(nproc) modules_install &&
-sudo cp arch/x86/boot/bzImage /boot/vmlinuz-6.6.5-shinobu-x86_64 &&
-sudo cp System.map /boot/System.map-6.6.5-shinobu-x86_64
+sudo cp arch/x86/boot/bzImage /boot/vmlinuz-6.6.6-shinobu-x86_64 &&
+sudo cp System.map /boot/System.map-6.6.6-shinobu-x86_64
 ```
 
 ## Kernel Documentation
@@ -90,8 +90,8 @@ sudo cp System.map /boot/System.map-6.6.5-shinobu-x86_64
 * Install kernel documentation (optional).
 
 ```bash
-sudo install -d /usr/share/doc/linux-6.6.5-shinobu-x86_64 &&
-sudo cp -r Documentation/* /usr/share/doc/linux-6.6.5-shinobu-x86_64
+sudo install -d /usr/share/doc/linux-6.6.6-shinobu-x86_64 &&
+sudo cp -r Documentation/* /usr/share/doc/linux-6.6.6-shinobu-x86_64
 ```
 
 ## Generate Initramfs
@@ -99,13 +99,13 @@ sudo cp -r Documentation/* /usr/share/doc/linux-6.6.5-shinobu-x86_64
 * Generate minimal initramfs using mkinitcpio.
 
 ```bash
-sudo mkinitcpio -z lz4 -k 6.6.5-shinobu-x86_64 -g /boot/initramfs-6.6.5-shinobu-x86_64.img
+sudo mkinitcpio -z lz4 -k 6.6.6-shinobu-x86_64 -g /boot/initramfs-6.6.6-shinobu-x86_64.img
 ```
 
 * Generate full initramfs using dracut.
 
 ```bash
-sudo dracut --lz4 --kver 6.6.5-shinobu-x86_64 /boot/initramfs-6.6.5-shinobu-x86_64.img
+sudo dracut --lz4 --kver 6.6.6-shinobu-x86_64 /boot/initramfs-6.6.6-shinobu-x86_64.img
 ```
 
 `*2 ways to generate initramfs, use one (minimal / full).`
@@ -127,9 +127,9 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg || sudo grub2-mkconfig -o /boot/grub/g
 * Uninstall kernel.
 
 ```bash
-sudo rm -r /boot/*6.6.5-shinobu-x86_64* &&
-sudo rm -r /lib/modules/6.6.5-shinobu-x86_64 &&
-sudo rm -r /usr/share/doc/linux-6.6.5-shinobu-x86_64 &&
+sudo rm -r /boot/*6.6.6-shinobu-x86_64* &&
+sudo rm -r /lib/modules/6.6.6-shinobu-x86_64 &&
+sudo rm -r /usr/share/doc/linux-6.6.6-shinobu-x86_64 &&
 sudo grub-mkconfig -o /boot/grub/grub.cfg || sudo grub2-mkconfig -o /boot/grub/grub.cfg
 ```
 
@@ -137,6 +137,6 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg || sudo grub2-mkconfig -o /boot/grub/g
 
 ## License
 
-This project is licensed under the [GPL v2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html), material inside the logo folder is licensed under [CC0](https://creativecommons.org/publicdomain/zero/1.0), and The Linux Kernel is licensed under [GPL v2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
+This project is licensed under the [GPL v2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html), material inside the logo folder is licensed under [CC0](https://creativecommons.org/publicdomain/zero/1.0), Shinobu is a character from Kimetsu no Yaiba written by Koyoharu Gotouge, [The Linux Kernel](https://kernel.org) is licensed under [GPL v2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html), and Linux is a registered trademark of Linus Torvalds.
 
 ---
