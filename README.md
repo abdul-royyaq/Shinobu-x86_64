@@ -32,7 +32,7 @@ sudo apt install git build-essential bc bison flex libncurses-dev libssl-dev lib
 * Arch/Manjaro
 
 ```bash
-sudo pacman -S git base-devel bc ncurses openssl libelf lz4 zstd
+sudo pacman -S git base-devel bc ncurses openssl libelf lz4 zstd cpio
 ```
 
 * Fedora
@@ -41,22 +41,20 @@ sudo pacman -S git base-devel bc ncurses openssl libelf lz4 zstd
 sudo dnf install git @development-tools bc ncurses-devel lz4 zstd
 ```
 
-**Need Zstandard utility because kmod cannot be compressed with LZ4 (I just realized, Sorry).*
-
 ### Set Environment Variable
 
 So tired to change kernel versions one by one so...
 
 ```bash
-kvervar=6.7.0-shinobu
+kvervar=6.7.3-shinobu
 ```
 
 ### Fetch Linux Kernel Source
 
-Fetch [Linux 6.7](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.7) source code.
+Fetch [Linux 6.7.3](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.7.3) source code.
  
 ```bash
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.7 &&
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.7.3 &&
 sudo mv linux /usr/src/linux-$kvervar
 ```
 
@@ -77,7 +75,7 @@ cp /usr/src/Shinobu-x86_64/.config /usr/src/linux-$kvervar/ &&
 cp /usr/src/Shinobu-x86_64/logo/logo_linux_clut224-1920x1080.ppm /usr/src/linux-$kvervar/drivers/video/logo/logo_linux_clut224.ppm
 ```
 
-**For 1366x768p resolution can use logo_linux_clut224-1366x768.ppm.*
+**For 1366x768p resolution can use `logo_linux_clut224-1366x768.ppm`.*
 
 ```bash
 cp /usr/src/Shinobu-x86_64/logo/logo_linux_clut224-1366x768.ppm /usr/src/linux-$kvervar/drivers/video/logo/logo_linux_clut224.ppm
@@ -99,13 +97,13 @@ make menuconfig
 
 ## Kernel Compilation
 
-Kernel compilation with all cpu cores.
+Kernel compilation with all CPU cores.
 
 ```bash
 make LOCALVERSION= -j$(nproc)
 ```
 
-`*Added 'LOCALVERSION=' flag at compile time to avoid weird names added due to updates after commit tag.`
+`*Added `LOCALVERSION=` flag at compile time to avoid weird names added due to updates after commit tag.`
 
 ## Kernel Installation
 
