@@ -103,7 +103,7 @@ Kernel compilation with all CPU cores.
 make LOCALVERSION= -j$(nproc)
 ```
 
-`*Added `LOCALVERSION=` flag at compile time to avoid weird names added due to updates after commit tag.`
+**Added `LOCALVERSION=` flag at compile time to avoid weird names added due to updates after commit tag.*
 
 ## Kernel Installation
 
