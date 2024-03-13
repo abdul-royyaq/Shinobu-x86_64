@@ -46,22 +46,22 @@ sudo dnf install git @development-tools bc ncurses-devel lz4 zstd cpio
 Run this command every time you open a new shell session.
 
 ```bash
-kver=6.7.5-shinobu
+kver=6.8.0-shinobu
 ```
 
 ### Fetch Linux Kernel Source
 
-Fetch [Linux 6.7.5](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.7.5) source code.
+Fetch [Linux 6.8](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.8) source code.
  
 ```bash
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.7.5 &&
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.8
 sudo mv linux /usr/src/linux-$kver
 ```
 
 ### Fetch kernel configuration
 
 ```bash
-git clone https://github.com/abdul-royyaq/Shinobu-x86_64.git --depth 1 &&
+git clone https://github.com/abdul-royyaq/Shinobu-x86_64.git --depth 1
 sudo mv Shinobu-x86_64 /usr/src/Shinobu-x86_64
 ```
 
@@ -70,8 +70,8 @@ sudo mv Shinobu-x86_64 /usr/src/Shinobu-x86_64
 Backup original linux logo & apply kernel configuration.
 
 ```bash
-mv /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.ppm /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.backup.ppm &&
-cp /usr/src/Shinobu-x86_64/.config /usr/src/linux-$kver/ &&
+mv /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.ppm /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.backup.ppm
+cp /usr/src/Shinobu-x86_64/.config /usr/src/linux-$kver/
 cp /usr/src/Shinobu-x86_64/logo/logo_linux_clut224-1920x1080.ppm /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.ppm
 ```
 
@@ -110,8 +110,8 @@ make LOCALVERSION= -j$(nproc)
 Installing Linux kernel.
 
 ```bash
-sudo make -j$(nproc) modules_install &&
-sudo cp arch/x86/boot/bzImage /boot/vmlinuz-$kver-x86_64 &&
+sudo make -j$(nproc) modules_install 
+sudo cp arch/x86/boot/bzImage /boot/vmlinuz-$kver-x86_64
 sudo cp System.map /boot/System.map-$kver-x86_64
 ```
 
@@ -120,7 +120,7 @@ sudo cp System.map /boot/System.map-$kver-x86_64
 Installing kernel documentation (optional).
 
 ```bash
-sudo install -d /usr/share/doc/linux-$kver-x86_64 &&
+sudo install -d /usr/share/doc/linux-$kver-x86_64
 sudo cp -r Documentation/* /usr/share/doc/linux-$kver-x86_64
 ```
 
@@ -173,10 +173,10 @@ sudo grubby --title="$(cat /etc/os-release | grep 'NAME' | sed -e 's/NAME="\(.*\
 If you want to uninstall this Linux kernel.
 
 ```bash
-kver=6.7.5-shinobu
-sudo rm -r /boot/*$kver-x86_64* &&
-sudo rm -r /lib/modules/$kver-x86_64 &&
-sudo rm -r /usr/share/doc/linux-$kver-x86_64 &&
+kver=6.8.0-shinobu
+sudo rm -r /boot/*$kver-x86_64*
+sudo rm -r /lib/modules/$kver-x86_64
+sudo rm -r /usr/share/doc/linux-$kver-x86_64
 sudo update-grub || sudo grub-mkconfig -o /boot/grub/grub.cfg || sudo grubby --remove-kernel=/boot/vmlinuz-$kver-x86_64
 ```
 
@@ -184,6 +184,6 @@ sudo update-grub || sudo grub-mkconfig -o /boot/grub/grub.cfg || sudo grubby --r
 
 ## License
 
-This project is licensed under the [GPL v2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html), material inside the [logo folder](logo/) is licensed under [CC0](https://creativecommons.org/publicdomain/zero/1.0), Shinobu is a character from Kimetsu no Yaiba written by Koyoharu Gotouge, [The Linux Kernel](https://kernel.org) is licensed under [GPL v2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html), and Linux is a registered trademark of Linus Torvalds.
+This project is licensed under the [GPL v2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html), material inside the [logo folder](logo/) is licensed under [CC0](https://creativecommons.org/publicdomain/zero/1.0), Shinobu is a character from [Kimetsu no Yaiba](https://kimetsu.com) written by Koyoharu Gotouge, [The Linux Kernel](https://kernel.org) is licensed under [GPL v2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html), and Linux is a registered trademark of Linus Torvalds.
 
 ---
