@@ -46,15 +46,15 @@ sudo dnf install git @development-tools bc ncurses-devel lz4 zstd cpio
 Run this command every time you open a new shell session.
 
 ```bash
-kver=6.8.0-shinobu
+kver=6.8.6-shinobu
 ```
 
 ### Fetch Linux Kernel Source
 
-Fetch [Linux 6.8](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.8) source code.
+Fetch [Linux 6.8.6](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.8.6) source code.
  
 ```bash
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.8
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.8.6
 sudo mv linux /usr/src/linux-$kver
 ```
 
@@ -173,7 +173,7 @@ sudo grubby --title="$(cat /etc/os-release | grep 'NAME' | sed -e 's/NAME="\(.*\
 If you want to uninstall this Linux kernel.
 
 ```bash
-kver=6.8.0-shinobu
+kver=6.8.6-shinobu
 sudo rm -r /boot/*$kver-x86_64*
 sudo rm -r /lib/modules/$kver-x86_64
 sudo rm -r /usr/share/doc/linux-$kver-x86_64
