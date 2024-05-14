@@ -5,15 +5,14 @@ Customized for high performance stability and security with low latency. Offers 
 
 ## Features Offered
 
-* Performance cpufreq governor.
-* Performance PCIe ASPM policy.
-* Security kernel hardening.
+* Performance as default cpufreq governor.
+* Performance as default PCIe ASPM policy.
+* Pre-configure security kernel hardening.
 * SELinux & Apparmor isolation support.
-* Low latency desktop preemption.
-* Fast 1000hz timer frequency.
-* Fastest LZ4 compression.
-* Device driver as kernel module.
-* -O2 level for compiler optimization.
+* Low latency desktop preemption model.
+* Kernel module with ZSTD compression.
+* Non-core device driver as kernel module.
+* Compiler optimization level -O2.
 
 ---
 
@@ -46,15 +45,15 @@ sudo dnf install git @development-tools bc ncurses-devel lz4 zstd cpio
 Run this command every time you open a new shell session.
 
 ```bash
-kver=6.8.6-shinobu
+kver=6.9.0-shinobu
 ```
 
 ### Fetch Linux Kernel Source
 
-Fetch [Linux 6.8.6](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.8.6) source code.
+Fetch [Linux 6.9](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.9) source code.
  
 ```bash
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.8.6
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.9
 sudo mv linux /usr/src/linux-$kver
 ```
 
@@ -173,7 +172,7 @@ sudo grubby --title="$(cat /etc/os-release | grep 'NAME' | sed -e 's/NAME="\(.*\
 If you want to uninstall this Linux kernel.
 
 ```bash
-kver=6.8.6-shinobu
+kver=6.9.0-shinobu
 sudo rm -r /boot/*$kver-x86_64*
 sudo rm -r /lib/modules/$kver-x86_64
 sudo rm -r /usr/share/doc/linux-$kver-x86_64
