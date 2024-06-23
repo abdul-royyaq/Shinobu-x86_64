@@ -20,7 +20,7 @@ Customized for high performance stability and security with low latency. Offers 
 
 ### Install Tools for Build and Compilation
 
-To build the Linux kernel, you need this software installed on your system.
+To build the Linux kernel, you need this following software installed on your system.
 
 * Debian/Ubuntu
 
@@ -45,15 +45,15 @@ sudo dnf install git @development-tools bc ncurses-devel lz4 zstd cpio
 Run this command every time you open a new shell session.
 
 ```bash
-kver=6.9.0-shinobu
+kver=6.9.6-shinobu
 ```
 
 ### Fetch Linux Kernel Source
 
-Fetch [Linux 6.9](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.9) source code.
+Fetch [Linux 6.9.6](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.9.6) source code.
  
 ```bash
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.9
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.9.6
 sudo mv linux /usr/src/linux-$kver
 ```
 
@@ -102,8 +102,6 @@ Kernel compilation with all CPU cores.
 make LOCALVERSION= -j$(nproc)
 ```
 
-**Added `LOCALVERSION=` flag at compile time to avoid weird names added due to updates after commit tag.*
-
 ## Kernel Installation
 
 Installing Linux kernel.
@@ -116,7 +114,7 @@ sudo cp System.map /boot/System.map-$kver-x86_64
 
 ## Kernel Documentation
 
-Installing kernel documentation (optional).
+Installing kernel documentations (optional).
 
 ```bash
 sudo install -d /usr/share/doc/linux-$kver-x86_64
@@ -125,22 +123,10 @@ sudo cp -r Documentation/* /usr/share/doc/linux-$kver-x86_64
 
 ## Generate Initramfs
 
-There are two ways to generate initramfs, use one (minimal/full).
-
-### Generate Minimal Initramfs
-
-Generate minimal initramfs using mkinitcpio (mostly used on ArchLinux).
+Generate Initramfs Images.
 
 ```bash
-sudo mkinitcpio -z lz4 -k $kver-x86_64 -g /boot/initramfs-$kver-x86_64.img
-```
-
-### Generate Full Initramfs
-
-Generate full initramfs using dracut (mostly used on Debian and Fedora).
-
-```bash
-sudo dracut --lz4 --kver $kver-x86_64 /boot/initramfs-$kver-x86_64.img
+sudo mkinitcpio -z lz4 -k $kver-x86_64 -g /boot/initramfs-$kver-x86_64.img || sudo dracut --lz4 --kver $kver-x86_64 /boot/initramfs-$kver-x86_64.img
 ```
 
 ## Update Bootloader
@@ -172,7 +158,7 @@ sudo grubby --title="$(cat /etc/os-release | grep 'NAME' | sed -e 's/NAME="\(.*\
 If you want to uninstall this Linux kernel.
 
 ```bash
-kver=6.9.0-shinobu
+kver=6.9.6-shinobu
 sudo rm -r /boot/*$kver-x86_64*
 sudo rm -r /lib/modules/$kver-x86_64
 sudo rm -r /usr/share/doc/linux-$kver-x86_64
