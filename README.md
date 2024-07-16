@@ -10,7 +10,7 @@ Customized for high performance stability and security with low latency. Offers 
 * Pre-configure security kernel hardening.
 * SELinux & Apparmor isolation support.
 * Low latency desktop preemption model.
-* Kernel module with ZSTD compression.
+* Build with fully ZSTD compression.
 * Non-core device driver as kernel module.
 * Compiler optimization level -O2.
 
@@ -25,19 +25,19 @@ To build the Linux kernel, you need this following software installed on your sy
 * Debian/Ubuntu
 
 ```bash
-sudo apt install git build-essential bc bison flex libncurses-dev libssl-dev libelf-dev lz4 zstd cpio
+sudo apt install git build-essential bc bison flex libncurses-dev libssl-dev libelf-dev zstd cpio
 ```
 
 * Arch/Manjaro
 
 ```bash
-sudo pacman -S git base-devel bc ncurses openssl libelf lz4 zstd cpio
+sudo pacman -S git base-devel bc ncurses openssl libelf zstd cpio
 ```
 
 * Fedora
 
 ```bash
-sudo dnf install git @development-tools bc ncurses-devel lz4 zstd cpio
+sudo dnf install git @development-tools bc ncurses-devel zstd cpio
 ```
 
 ### Set Environment Variable
@@ -45,15 +45,15 @@ sudo dnf install git @development-tools bc ncurses-devel lz4 zstd cpio
 Run this command every time you open a new shell session.
 
 ```bash
-kver=6.9.6-shinobu
+kver=6.10.0-shinobu
 ```
 
 ### Fetch Linux Kernel Source
 
-Fetch [Linux 6.9.6](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.9.6) source code.
+Fetch [Linux 6.10](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.10) source code.
  
 ```bash
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.9.6
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.10
 sudo mv linux /usr/src/linux-$kver
 ```
 
@@ -126,7 +126,7 @@ sudo cp -r Documentation/* /usr/share/doc/linux-$kver-x86_64
 Generate Initramfs Images.
 
 ```bash
-sudo mkinitcpio -z lz4 -k $kver-x86_64 -g /boot/initramfs-$kver-x86_64.img || sudo dracut --lz4 --kver $kver-x86_64 /boot/initramfs-$kver-x86_64.img
+sudo mkinitcpio -z zstd -k $kver-x86_64 -g /boot/initramfs-$kver-x86_64.img || sudo dracut --zstd --kver $kver-x86_64 /boot/initramfs-$kver-x86_64.img
 ```
 
 ## Update Bootloader
@@ -158,7 +158,7 @@ sudo grubby --title="$(cat /etc/os-release | grep 'NAME' | sed -e 's/NAME="\(.*\
 If you want to uninstall this Linux kernel.
 
 ```bash
-kver=6.9.6-shinobu
+kver=6.10.0-shinobu
 sudo rm -r /boot/*$kver-x86_64*
 sudo rm -r /lib/modules/$kver-x86_64
 sudo rm -r /usr/share/doc/linux-$kver-x86_64
