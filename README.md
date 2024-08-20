@@ -45,15 +45,15 @@ sudo dnf install git @development-tools bc ncurses-devel zstd cpio
 Run this command every time you open a new shell session.
 
 ```bash
-kver=6.10.0-shinobu
+kver=6.10.6-shinobu
 ```
 
 ### Fetch Linux Kernel Source
 
-Fetch [Linux 6.10](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.10) source code.
+Fetch [Linux 6.10.6](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.10.6) source code.
  
 ```bash
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.10
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.10.6
 sudo mv linux /usr/src/linux-$kver
 ```
 
@@ -71,14 +71,16 @@ Backup original linux logo & apply kernel configuration.
 ```bash
 mv /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.ppm /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.backup.ppm
 cp /usr/src/Shinobu-x86_64/.config /usr/src/linux-$kver/
-cp /usr/src/Shinobu-x86_64/logo/logo_linux_clut224-1920x1080.ppm /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.ppm
+cp /usr/src/Shinobu-x86_64/logo/shinobu_tired_1920x1051.ppm /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.ppm
 ```
 
-**For 1366x768p resolution can use `logo_linux_clut224-1366x768.ppm`.*
+**For 1366x768p resolution can use `shinobu_tired_1366x768.ppm`.*
 
 ```bash
-cp /usr/src/Shinobu-x86_64/logo/logo_linux_clut224-1366x768.ppm /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.ppm
+cp /usr/src/Shinobu-x86_64/logo/shinobu_tired_1366x768.ppm /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.ppm
 ```
+
+***you can change the boot splash logo, see [logo](logo/) folder for other "kawaii" shinobu splash screen.*
 
 ### Entering kernel source directory
 
@@ -158,7 +160,7 @@ sudo grubby --title="$(cat /etc/os-release | grep 'NAME' | sed -e 's/NAME="\(.*\
 If you want to uninstall this Linux kernel.
 
 ```bash
-kver=6.10.0-shinobu
+kver=6.10.6-shinobu
 sudo rm -r /boot/*$kver-x86_64*
 sudo rm -r /lib/modules/$kver-x86_64
 sudo rm -r /usr/share/doc/linux-$kver-x86_64
