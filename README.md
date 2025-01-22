@@ -13,6 +13,7 @@ Customized for high performance stability and security with low latency. Offers 
 * Build with fully ZSTD compression.
 * Non-core device driver as kernel module.
 * Compiler optimization level -O2.
+* Extreme debloat since Linux 6.13, disabling unnecessary kernel modules for desktop & laptop use.
 
 ---
 
@@ -45,15 +46,15 @@ sudo dnf install git @development-tools bc ncurses-devel zstd cpio
 Run this command every time you open a new shell session.
 
 ```bash
-kver=6.12.0-shinobu
+kver=6.13.0-shinobu
 ```
 
 ### Fetch Linux Kernel Source
 
-Fetch [Linux 6.12](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.12) source code.
+Fetch [Linux 6.13](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.13) source code.
  
 ```bash
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.12
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.13
 sudo mv linux /usr/src/linux-$kver
 ```
 
@@ -160,7 +161,7 @@ sudo grubby --title="$(cat /etc/os-release | grep 'NAME' | sed -e 's/NAME="\(.*\
 If you want to uninstall this Linux kernel.
 
 ```bash
-kver=6.12.0-shinobu
+kver=6.13.0-shinobu
 sudo rm -r /boot/*$kver-x86_64*
 sudo rm -r /lib/modules/$kver-x86_64
 sudo rm -r /usr/share/doc/linux-$kver-x86_64
