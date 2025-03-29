@@ -46,15 +46,15 @@ sudo dnf install git @development-tools bc ncurses-devel zstd cpio
 Run this command every time you open a new shell session.
 
 ```bash
-kver=6.13.1-shinobu
+kver=6.14.0-shinobu
 ```
 
 ### Fetch Linux Kernel Source
 
-Fetch [Linux 6.13](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.13) source code.
+Fetch [Linux 6.14](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.14) source code.
  
 ```bash
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.13.1
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.14
 sudo mv linux /usr/src/linux-$kver
 ```
 
@@ -72,7 +72,7 @@ Backup original linux logo & apply kernel configuration.
 ```bash
 mv /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.ppm /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.backup.ppm
 cp /usr/src/Shinobu-x86_64/.config /usr/src/linux-$kver/
-cp /usr/src/Shinobu-x86_64/logo/shinobu_tired_1920x1051.ppm /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.ppm
+cp /usr/src/Shinobu-x86_64/logo/shinobu_tired_1920x1072.ppm /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.ppm
 ```
 
 **For 1366x768p resolution can use `shinobu_tired_1366x768.ppm`.*
@@ -82,6 +82,14 @@ cp /usr/src/Shinobu-x86_64/logo/shinobu_tired_1366x768.ppm /usr/src/linux-$kver/
 ```
 
 ***you can change the boot splash logo, see [logo](logo/) folder for other "kawaii" shinobu splash screen.*
+
+***or use your own images (need ImageMagick & netpbm):*
+
+```bash
+magick images.png -resize 1920x1072\! - | pngtopnm - | ppmquant 224 | pnmnoraw > images-1920x1072.ppm
+
+magick images.jpg -resize 1366x768\! - | jpegtopnm - | ppmquant 224 | pnmnoraw > images-1366x768.ppm
+```
 
 ### Entering kernel source directory
 
@@ -129,7 +137,7 @@ sudo cp -r Documentation/* /usr/share/doc/linux-$kver-x86_64
 Generate Initramfs Images.
 
 ```bash
-sudo mkinitcpio -z zstd -k $kver-x86_64 -g /boot/initramfs-$kver-x86_64.img || sudo dracut --zstd --kver $kver-x86_64 /boot/initramfs-$kver-x86_64.img
+sudo mkinitcpio -z zstd -k $kver-x86_64 -g /boot/initramfs-$kver-x86_64.img || sudo dracut --zstd --kver $kver-x86_64
 ```
 
 ## Update Bootloader
@@ -153,7 +161,8 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 * Fedora
 
 ```bash
-sudo grubby --title="$(cat /etc/os-release | grep 'NAME' | sed -e 's/NAME="\(.*\)"/\1/' | head -1) ($kver-x86_64) $(cat /etc/os-release | grep 'VERSION' | sed -e 's/VERSION="\(.*\)"/\1/' | head -1)"--add-kernel=/boot/vmlinuz-$kver-x86_64 --copy-default
+sudo grub2-editenv - unset menu_auto_hide
+sudo kernel-install add $kver-x86_64 /boot/vmlinuz-$kver-x86_64
 ```
 
 ## Uninstall Kernel
@@ -161,11 +170,11 @@ sudo grubby --title="$(cat /etc/os-release | grep 'NAME' | sed -e 's/NAME="\(.*\
 If you want to uninstall this Linux kernel.
 
 ```bash
-kver=6.13.1-shinobu
+kver=6.14.0-shinobu
 sudo rm -r /boot/*$kver-x86_64*
 sudo rm -r /lib/modules/$kver-x86_64
 sudo rm -r /usr/share/doc/linux-$kver-x86_64
-sudo update-grub || sudo grub-mkconfig -o /boot/grub/grub.cfg || sudo grubby --remove-kernel=/boot/vmlinuz-$kver-x86_64
+sudo update-grub || sudo grub-mkconfig -o /boot/grub/grub.cfg || sudo kernel-install remove $kver-x86_64
 ```
 
 **Before uninstall this kernel, make sure there is another kernel installed.*
