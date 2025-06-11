@@ -5,15 +5,15 @@ Customized for high performance stability and security with low latency. Offers 
 
 ## Features Offered
 
-* Performance as default cpufreq governor.
-* Performance as default PCIe ASPM policy.
+* Performance as default CPUFreq governor (depends on ACPI & userspace power profile).
+* Performance as default PCIe ASPM policy (depends on ACPI power profile).
 * Pre-configure security kernel hardening.
-* SELinux & Apparmor isolation support.
+* SELinux & Apparmor isolation support (SELinux & Apparmor config depends on your system).
 * Low latency desktop preemption model.
 * Build with fully ZSTD compression.
 * Non-core device driver as kernel module.
-* Compiler optimization level -O2.
-* Extreme debloat since Linux 6.13, disabling unnecessary kernel modules for desktop & laptop use.
+* Optimize for fast compilation.
+* Extreme debloat, disabling unnecessary kernel modules for desktop & laptop use.
 
 ---
 
@@ -46,15 +46,15 @@ sudo dnf install git @development-tools bc ncurses-devel zstd cpio
 Run this command every time you open a new shell session.
 
 ```bash
-kver=6.14.0-shinobu
+kver=6.15.2-shinobu
 ```
 
 ### Fetch Linux Kernel Source
 
-Fetch [Linux 6.14](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.14) source code.
+Fetch [Linux 6.15.2](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.15.2) source code.
  
 ```bash
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.14
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.15.2
 sudo mv linux /usr/src/linux-$kver
 ```
 
@@ -72,24 +72,18 @@ Backup original linux logo & apply kernel configuration.
 ```bash
 mv /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.ppm /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.backup.ppm
 cp /usr/src/Shinobu-x86_64/.config /usr/src/linux-$kver/
-cp /usr/src/Shinobu-x86_64/logo/shinobu_tired_1920x1072.ppm /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.ppm
+cp /usr/src/Shinobu-x86_64/logo/shinobu_tired-1920x1072.ppm /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.ppm
 ```
 
-**For 1366x768p resolution can use `shinobu_tired_1366x768.ppm`.*
+**For 1366x768p resolution can use `shinobu_tired-1366x768.ppm`.*
 
 ```bash
-cp /usr/src/Shinobu-x86_64/logo/shinobu_tired_1366x768.ppm /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.ppm
+cp /usr/src/Shinobu-x86_64/logo/shinobu_tired-1366x768.ppm /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.ppm
 ```
 
-***you can change the boot splash logo, see [logo](logo/) folder for other "kawaii" shinobu splash screen.*
+**You can change the boot splash logo, see [logo](logo/) folder for other Shinobu splash screen.*
 
-***or use your own images (need ImageMagick & netpbm):*
-
-```bash
-magick images.png -resize 1920x1072\! - | pngtopnm - | ppmquant 224 | pnmnoraw > images-1920x1072.ppm
-
-magick images.jpg -resize 1366x768\! - | jpegtopnm - | ppmquant 224 | pnmnoraw > images-1366x768.ppm
-```
+**Or [use your own boot logo](logo/README.md)*
 
 ### Entering kernel source directory
 
@@ -118,9 +112,8 @@ make LOCALVERSION= -j$(nproc)
 Installing Linux kernel.
 
 ```bash
-sudo make -j$(nproc) modules_install 
+sudo make -j$(nproc) modules_install
 sudo cp arch/x86/boot/bzImage /boot/vmlinuz-$kver-x86_64
-sudo cp System.map /boot/System.map-$kver-x86_64
 ```
 
 ## Kernel Documentation
@@ -128,8 +121,7 @@ sudo cp System.map /boot/System.map-$kver-x86_64
 Installing kernel documentations (optional).
 
 ```bash
-sudo install -d /usr/share/doc/linux-$kver-x86_64
-sudo cp -r Documentation/* /usr/share/doc/linux-$kver-x86_64
+sudo cp -r Documentation /usr/share/doc/linux-$kver-x86_64
 ```
 
 ## Generate Initramfs
@@ -170,7 +162,7 @@ sudo kernel-install add $kver-x86_64 /boot/vmlinuz-$kver-x86_64
 If you want to uninstall this Linux kernel.
 
 ```bash
-kver=6.14.0-shinobu
+kver=6.15.2-shinobu
 sudo rm -r /boot/*$kver-x86_64*
 sudo rm -r /lib/modules/$kver-x86_64
 sudo rm -r /usr/share/doc/linux-$kver-x86_64
