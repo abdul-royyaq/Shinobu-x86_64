@@ -46,15 +46,15 @@ sudo dnf install git @development-tools bc ncurses-devel zstd cpio
 Run this command every time you open a new shell session.
 
 ```bash
-kver=6.19.0-shinobu
+kver=7.0.0-shinobu
 ```
 
 ### Fetch Linux Kernel Source
 
-Fetch [Linux 6.19](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.19) source code.
+Fetch [Linux 7.0](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v7.0) source code.
  
 ```bash
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v6.19
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git --depth 1 -b v7.0
 sudo mv linux /usr/src/linux-$kver
 ```
 
@@ -70,15 +70,14 @@ sudo mv Shinobu-x86_64 /usr/src/Shinobu-x86_64
 Backup original linux logo & apply kernel configuration.
 
 ```bash
-mv /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.ppm /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.backup.ppm
 cp /usr/src/Shinobu-x86_64/.config /usr/src/linux-$kver/
-cp /usr/src/Shinobu-x86_64/logo/shinobu_tired-1920x1072.ppm /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.ppm
+cp /usr/src/Shinobu-x86_64/logo/shinobu_tired-1920x1072.ppm /usr/src/linux-$kver/drivers/video/logo/logo_custom_clut224.ppm
 ```
 
 **For 1366x768p resolution can use `shinobu_tired-1366x768.ppm`.*
 
 ```bash
-cp /usr/src/Shinobu-x86_64/logo/shinobu_tired-1366x768.ppm /usr/src/linux-$kver/drivers/video/logo/logo_linux_clut224.ppm
+cp /usr/src/Shinobu-x86_64/logo/shinobu_tired-1366x768.ppm /usr/src/linux-$kver/drivers/video/logo/logo_custom_clut224.ppm
 ```
 
 **You can change the boot splash logo, see [logo](logo/) folder for other Shinobu splash screen.*
@@ -162,7 +161,7 @@ sudo kernel-install add $kver-x86_64 /boot/vmlinuz-$kver-x86_64
 If you want to uninstall this Linux kernel.
 
 ```bash
-kver=6.19.0-shinobu
+kver=7.0.0-shinobu
 sudo rm -r /boot/*$kver-x86_64*
 sudo rm -r /lib/modules/$kver-x86_64
 sudo rm -r /usr/share/doc/linux-$kver-x86_64
